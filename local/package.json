@@ -1,0 +1,28 @@
+{
+  "name": "habla",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Habla - aprende Python y SQL con prácticas ejecutables y progreso persistente.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "main": "server/server.js",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "node --watch server/server.js",
+    "start": "node server/server.js",
+    "test": "node --test \"tests/**/*.test.js\"",
+    "db:reset": "node scripts/setup.js --reset",
+    "verify:curriculum": "node scripts/verify-curriculum.js",
+    "test:browser": "node scripts/browser-check.cjs"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^5.2.1"
+  },
+  "optionalDependencies": {
+    "better-sqlite3": "^13.0.3"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Habla — Aprende Python y SQL</title>
+  <meta name="description" content="Aprende a escribir Python y SQL con retos, pruebas reales y progreso guardado.">
+  <meta name="theme-color" content="#F6F5F1">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/styles.css?v=programming20261002">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- Aviso de carga inicial: se sustituye en cuanto arranca la app -->
+  <div id="boot" class="boot" role="status" aria-live="polite">
+    <img class="boot__mascot" src="/assets/mascot-sun.svg" alt="" width="72" height="72">
+    <p class="boot__text">Loading Habla…</p>
+  </div>
+
+  <!-- Estructura de la app. La navegacion se muestra solo con sesion activa. -->
+  <div id="app" class="app" hidden>
+    <!-- Barra superior (movil y tableta) -->
+    <header id="topbar" class="topbar" hidden>
+      <a class="brand brand--small" href="/learn" data-route>
+        <img src="/assets/logo.svg" alt="" width="28" height="28">
+        <span class="brand__name">Habla</span>
+      </a>
+      <div id="topbar-stats" class="stats stats--inline"></div>
+    </header>
+
+    <!-- Navegacion lateral (ordenador) -->
+    <nav id="sidebar" class="sidebar" aria-label="Main navigation" hidden>
+      <a class="brand" href="/learn" data-route>
+        <img src="/assets/logo.svg" alt="" width="36" height="36">
+        <span class="brand__name">Habla</span>
+      </a>
+      <ul class="navlist" id="sidebar-nav"></ul>
+      <div id="sidebar-stats" class="stats stats--stacked"></div>
+    </nav>
+
+    <main id="main" class="main" tabindex="-1">
+      <div id="view" class="view"></div>
+    </main>
+
+    <!-- Navegacion inferior (movil) -->
+    <nav id="bottomnav" class="bottomnav" aria-label="Main navigation" hidden>
+      <ul class="bottomnav__list" id="bottomnav-list"></ul>
+    </nav>
+  </div>
+
+  <!-- Mensajes emergentes (errores de red, avisos) -->
+  <div id="toasts" class="toasts" role="region" aria-label="Notifications" aria-live="polite"></div>
+
+  <script type="module" src="/js/main.js?v=programming20261002"></script>
+  <noscript>
+    <p class="noscript">Habla needs JavaScript to run. Please enable it and reload the page.</p>
+  </noscript>
+</body>
+</html>

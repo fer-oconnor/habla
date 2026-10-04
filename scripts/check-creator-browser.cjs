@@ -1,0 +1,43 @@
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+const {chromium,base,launchOptions,prepareLearner}=require('./qa-browser.cjs');
+(async()=>{
+  const browser=await chromium.launch(launchOptions);
+  const context=await browser.newContext({viewport:{width:1280,height:900}});
+  await context.addCookies([{name:'__sites_local_auth',value:'1',url:base}]);
+  const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
+  try {
+    await prepareLearner(page);
+    await page.goto(base+'/admin');
+    const before=await page.evaluate(async()=> (await import('/js/api.js?v=studio20261003')).api.progress());
+    const current=await page.evaluate(async()=> (await import('/js/api.js?v=studio20261003')).api.me());
+    assert.equal(current.user.isCreator,true,'La vista previa debe cargar .dev.vars');
+    if(await page.getByRole('heading',{name:'Tu progreso y tu privacidad'}).count()) await page.getByRole('button',{name:'Compartir mi resumen y continuar'}).click();
+    else await page.evaluate(async()=>{const {api}=await import('/js/api.js?v=studio20261003');await api.updateMe({progressSharing:true,progressNoticeVersion:'creator-summary-20261003'});});
+    await page.goto(base+'/admin');
+    await page.getByRole('heading',{name:'Participantes',exact:true}).waitFor();
+    await page.locator('.admin-person').first().waitFor();
+    const admin=await context.request.get(base+'/api/v1/admin/learners');assert.equal(admin.status(),200);
+    const data=await admin.json();assert.ok(data.total>=1);assert.ok(data.participants.some(x=>x.isYou));
+    fs.mkdirSync('work/screenshots',{recursive:true});
+    await page.screenshot({path:'work/screenshots/creator-desktop.png',fullPage:true});
+    await page.setViewportSize({width:390,height:844});
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+    await page.screenshot({path:'work/screenshots/creator-mobile.png',fullPage:true});
+    await page.goto(base+'/profile');await page.locator('#pf-progress-sharing').waitFor();
+    await page.locator('#pf-progress-sharing').uncheck();
+    await page.getByText('Tu resumen ya no aparece en el panel del creador. Tus avances se conservan.',{exact:true}).waitFor();
+    const hidden=await context.request.get(base+'/api/v1/admin/learners');assert.ok(!(await hidden.json()).participants.some(x=>x.isYou));
+    await page.reload();await page.locator('#pf-progress-sharing').waitFor();assert.equal(await page.locator('#pf-progress-sharing').isChecked(),false);
+    await page.locator('#pf-progress-sharing').check();
+    await page.getByText('Tu resumen aparece en el panel privado del creador.',{exact:true}).waitFor();
+    const after=await page.evaluate(async()=> (await import('/js/api.js?v=studio20261003')).api.progress());
+    assert.equal(after.xp,before.xp);assert.equal(after.lessonsPassed,before.lessonsPassed);
+    const anonymous=await browser.newContext();
+    const response=await anonymous.request.get(base+'/api/v1/admin/learners',{headers:{'oai-authenticated-user-id':'local_seedy','oai-authenticated-user-email':'seedy@sites.test'}});
+    assert.equal(response.status(),401,'Cabeceras falsificadas no deben iniciar sesión');
+    const spoof=await context.request.patch(base+'/api/v1/me',{headers:{Origin:base},data:{isCreator:true}});assert.equal(spoof.status(),403);
+    assert.deepEqual(errors,[]);
+    console.log(JSON.stringify({creatorDashboard:true,mobileNoOverflow:true,sharingPreferencePersistent:true,withdrawalHidesSummary:true,progressUnchanged:true,anonymousAndHeaderSpoofBlocked:true,pageErrors:errors}));
+  } finally {await browser.close();}
+})().catch(error=>{console.error(error);process.exit(1);});

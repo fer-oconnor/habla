@@ -1,0 +1,43 @@
+# Dependencies and generated builds
+node_modules/
+.next/
+.vinext/
+.sites-runtime/
+.wrangler/
+dist/
+out/
+coverage/
+next-env.d.ts
+
+# Private local data and backups
+data/
+backups/
+*.db
+*.db-wal
+*.db-shm
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# Credentials; publish only empty examples
+.env
+.env.*
+!.env.example
+.dev.vars*
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Development artifacts and editor state
+work/
+outputs/
+browser-artifacts/
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
+Desktop.ini
+.agents/
+.codex/

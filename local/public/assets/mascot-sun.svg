@@ -1,0 +1,23 @@
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#E9F5F2"/>
+      <stop offset="1" stop-color="#CFEAE4"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#14988A"/>
+      <stop offset="1" stop-color="#0B6E63"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="58" fill="url(#bg)"/>
+  <circle cx="60" cy="60" r="58" fill="none" stroke="#B9DDD5" stroke-width="1.5"/>
+  <g stroke="url(#mark)" stroke-width="4.6" stroke-linecap="round" fill="none">
+    <path d="M60 27v6.4"/>
+    <path d="M39.5 35.5l4.5 4.5"/>
+    <path d="M80.5 35.5l-4.5 4.5"/>
+    <path d="M31 55.5h6.4"/>
+    <path d="M82.6 55.5H89"/>
+  </g>
+  <circle cx="60" cy="57" r="17.5" fill="url(#mark)"/>
+  <path d="M47.6 71.4c-2.3 5.1-5.2 8.8-8.8 12.1 5.4.9 10.3-.4 14.4-3.2 1.6.5 3.3.8 5 .8-2.9-2.7-6.9-6-10.6-9.7Z" fill="url(#mark)"/>
+</svg>
